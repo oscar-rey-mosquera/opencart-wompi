@@ -1,0 +1,77 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="float-end">
+				<button type="submit" form="form-analytics" data-bs-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fas fa-save"></i></button>
+				<a href="{{ back }}" data-bs-toggle="tooltip" title="{{ button_back }}" class="btn btn-light"><i class="fas fa-reply"></i></a></div>
+			<h1>{{ heading_title }}</h1>
+			<ol class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+				{% endfor %}
+			</ol>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="card">
+			<div class="card-header"><i class="fas fa-pencil-alt"></i> {{ text_edit }}</div>
+			<div class="card-body">
+      <form data-oc-toggle="ajax" autocomplete="off" action="{{ save }}" method="post" enctype="multipart/form-data" id="form-analytics" class="form-horizontal">
+          <div class="alert alert-primary" role="alert">
+            {{ entry_info }} <a href="https://comercios.wompi.co/developers">https://comercios.wompi.co/developers<a/>
+           </div>
+
+           <div class="form-group required mt-2">
+            <label class="col-sm-2 control-label" for="input-public_key">{{ entry_public_key }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="payment_wompi_public_key" value="{{ payment_wompi_public_key  }}" placeholder="" id="input-public_key" class="form-control" />
+            </div>
+          </div>
+
+           <div class="form-group required mt-2">
+            <label class="col-sm-2 control-label" for="input-key">{{ entry_private_key }}</label>
+            <div class="col-sm-10">
+              <input type="password" name="payment_wompi_private_key" value="{{ payment_wompi_private_key  }}" placeholder="" id="input-key" class="form-control" />
+            </div>
+          </div>
+
+            <div class="form-group required mt-2">
+            <label class="col-sm-2 control-label">{{ entry_order_status }}</label>
+            <div class="col-sm-10">
+              <select name="payment_wompi_order_status_id" id="input-order-status" class="form-select">
+                {% for order_status in order_statuses %}
+                  <option value="{{ order_status.order_status_id }}"{% if order_status.order_status_id == payment_wompi_order_status_id %} selected{% endif %}>{{ order_status.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+           <div class="form-group required mt-2">
+            <label class="col-sm-2 control-label">{{ entry_order_final_status }}</label>
+            <div class="col-sm-10">
+              <select name="payment_wompi_order_final_status_id" id="input-order-status" class="form-select">
+                {% for order_status in order_statuses %}
+                  <option value="{{ order_status.order_status_id }}"{% if order_status.order_status_id == payment_wompi_order_final_status_id %} selected{% endif %}>{{ order_status.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+
+        <div class="form-group required mt-2">
+            <label class="col-sm-2 control-label">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <div class="form-check form-switch form-switch-lg">
+                <input type="hidden" name="payment_wompi_status" value="0"/>
+                <input type="checkbox" name="payment_wompi_status" value="1" id="input-status" class="form-check-input"{% if payment_wompi_status %} checked{% endif %}/>
+              </div>
+            </div>
+          </div>
+        
+        </form>
+			</div>
+		</div>
+	</div>
+</div>
+{{ footer }}

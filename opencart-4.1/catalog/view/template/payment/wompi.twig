@@ -1,0 +1,63 @@
+<div class="text-end">
+    <input type="button" value="{{ button_confirm }}" id="button-confirm" data-loading-text="{{ text_loading }}" class="btn btn-primary" />
+</div>
+
+<script type="text/javascript" src="https://checkout.wompi.co/widget.js"></script>
+<script type="text/javascript">
+
+
+function confirmation (transaction) {
+
+	 $.ajax({
+		url: 'index.php?route=extension/wompi/payment/wompi.callback' + '&id=' + transaction.id,
+		dataType: 'json',
+		beforeSend: function() {
+			$('#button-confirm').button('loading');
+		},
+		complete: function() {
+			$('#button-confirm').button('reset');
+		},
+		success: function(json) {
+         location = json['redirect'];
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert('Error');
+		}
+	});
+
+}
+
+
+$('#button-confirm').on('click', function() {
+
+var checkout = new WidgetCheckout({
+  currency:  "{{ currency_code }}",
+  amountInCents: "{{ amount }}",
+  reference: "{{ wompi_reference }}",
+  publicKey: "{{ wompi_public_key }}",
+  redirectUrl : "{{ url_redirect }}"
+
+})
+
+  $.ajax({
+		url: 'index.php?route=extension/wompi/payment/wompi.confirm',
+		dataType: 'json',
+		beforeSend: function() {
+			$('#button-confirm').button('loading');
+		},
+		complete: function() {
+	      $('#button-confirm').button('reset');
+		},
+		success: function(json) {
+         checkout.open(function ( result ) {
+		   confirmation(result.transaction)
+         })
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			
+			alert('Error');
+		}
+	});
+
+})
+</script>
